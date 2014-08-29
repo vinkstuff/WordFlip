@@ -2,7 +2,9 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center_horizontal"
+    android:background="@color/grey">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -17,32 +19,37 @@
             android:id="@+id/twWord"
             android:textAlignment="center"
             android:gravity="center"
-            android:textSize="36dp" />
+            android:textSize="36dp"
+            android:textColor="#ffffffff" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:weightSum="2">
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start recording"
-            android:id="@+id/btnRecord" />
+            android:id="@+id/btnPlayReverse"
+            android:src="@drawable/play_reverse_icon"
+            android:layout_weight="1" />
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Play"
-            android:id="@+id/btnPlay" />
+            android:id="@+id/btnPlay"
+            android:src="@drawable/play_icon"
+            android:layout_weight="1" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Play reverse"
-            android:id="@+id/btnPlayReverse" />
     </LinearLayout>
+
+    <Button
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:id="@+id/btnRecord"
+        android:background="@drawable/record_off_icon" />
 
 </LinearLayout>

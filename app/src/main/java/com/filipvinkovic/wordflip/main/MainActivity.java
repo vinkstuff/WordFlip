@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.filipvinkovic.wordflip.R;
@@ -62,39 +63,29 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 if(!isRecording) {
                     startRecording();
-                    recordButton.setText("Stop recording");
+                    recordButton.setBackgroundResource(R.drawable.record_on_icon);
                 }
                 else {
                     stopRecording();
-                    recordButton.setText("Start recording");
+                    recordButton.setBackgroundResource(R.drawable.record_off_icon);
                 }
             }
         });
 
-        final Button playButton = (Button) findViewById(R.id.btnPlay);
+        final ImageButton playButton = (ImageButton) findViewById(R.id.btnPlay);
         playButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(!isPlaying) {
                     playAudio(false);
-                    playButton.setText("Stop playing");
-                }
-                else {
-                    stopAudio();
-                    playButton.setText("Start playing");
                 }
             }
         });
 
-        final Button playReverseButton = (Button) findViewById(R.id.btnPlayReverse);
+        final ImageButton playReverseButton = (ImageButton) findViewById(R.id.btnPlayReverse);
         playReverseButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(!isPlaying) {
                     playAudio(true);
-                    playReverseButton.setText("Play reverse");
-                }
-                else {
-                    //stopPlaying();
-                    playReverseButton.setText("Stop reverse");
                 }
             }
         });
