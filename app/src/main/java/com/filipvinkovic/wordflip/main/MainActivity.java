@@ -17,7 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.filipvinkovic.wordflip.R;
-import com.filipvinkovic.wordflip.com.filipvinkovic.wordflip.database.Database;
+import com.filipvinkovic.wordflip.database.Database;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,11 +30,10 @@ import java.io.IOException;
  */
 public class MainActivity extends Activity {
     private static final String LOG_STRING = "WordFlip";
-    private static final int RECORDER_SAMPLERATE = 22050;
+    private static int RECORDER_SAMPLERATE;
     private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
     private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
     private String filePath = null;
-    private String reversedFilePath = null;
     private AudioRecord recorder = null;
     private Thread recordingThread = null;
     private MediaPlayer mPlayer = null;
@@ -63,11 +62,11 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 if(!isRecording) {
                     startRecording();
-                    recordButton.setBackgroundResource(R.drawable.record_on_icon);
+                    recordButton.setBackgroundResource(R.drawable.record_on_icon_2);
                 }
                 else {
                     stopRecording();
-                    recordButton.setBackgroundResource(R.drawable.record_off_icon);
+                    recordButton.setBackgroundResource(R.drawable.record_off_icon_2);
                 }
             }
         });
@@ -90,12 +89,12 @@ public class MainActivity extends Activity {
             }
         });
 
+        RECORDER_SAMPLERATE = getValidSampleRate();
         bufferSize = AudioRecord.getMinBufferSize(RECORDER_SAMPLERATE,
                 RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING);
 
         String directoryPath = Environment.getExternalStorageDirectory().getAbsolutePath();
         filePath = directoryPath + "/wfaudio.pcm";
-        reversedFilePath = directoryPath + "/wfreversedaudio.pcm";
     }
 
     int BufferElements2Rec = 1024; // want to play 2048 (2K) since 2 bytes we use only 1024
@@ -143,7 +142,6 @@ public class MainActivity extends Activity {
 
         while (isRecording) {
             // gets the voice output from microphone to byte format
-
             recorder.read(sData, 0, BufferElements2Rec);
             try {
                 // // writes the data to file from buffer
@@ -189,7 +187,7 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
 
-        if(reverse) {
+        if(reverse) { //Reverse the samples (2 bytes each) of the track
             reversedData = new byte[byteData.length];
             for(int i = 0; i < byteData.length; i += 2) {
                 reversedData[i] = byteData[byteData.length - 2 - i];
@@ -216,8 +214,19 @@ public class MainActivity extends Activity {
             Log.d(LOG_STRING, "audio track is not initialised ");
     }
 
-    private void stopAudio() {
-        mPlayer.release();
+    private int getValidSampleRate() {
+        int r = 8000;
+        for(int rate : new int[] {8000, 11025, 16000, 22050, 44100}) {
+            int bufferSize = AudioRecord.getMinBufferSize(rate,
+                    RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING);
+            if(bufferSize > 0) {
+                if(rate == 22050) {
+                    return rate;
+                }
+                r = rate;
+            }
+        }
+        return r;
     }
 
     @Override

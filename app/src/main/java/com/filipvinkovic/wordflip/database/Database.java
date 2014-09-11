@@ -1,4 +1,4 @@
-package com.filipvinkovic.wordflip.com.filipvinkovic.wordflip.database;
+package com.filipvinkovic.wordflip.database;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -23,7 +23,11 @@ public class Database extends SQLiteAssetHelper {
         String query = "SELECT word FROM words ORDER BY RANDOM() LIMIT 1";
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
+        String word = cursor.getString(0);
 
-        return cursor.getString(0);
+        cursor.close();
+        db.close();
+
+        return word;
     }
 }
